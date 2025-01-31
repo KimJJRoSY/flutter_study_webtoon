@@ -5,11 +5,12 @@ import 'package:http/http.dart' as http;
 
 // api 연동 코드
 class ApiService {
-  final String baseUrl = 'https://webtoon-crawler.nomadcoders.workers.dev';
-  final String today = "today"; // 엔드 포인트
+  static const String baseUrl =
+      'https://webtoon-crawler.nomadcoders.workers.dev';
+  static const String today = "today"; // 엔드 포인트
 
 // await 함수가 Future이라서 타입 명시해야됨
-  Future<List<WebtoonModel>> getTodaysToons() async {
+  static Future<List<WebtoonModel>> getTodaysToons() async {
     List<WebtoonModel> webtoonInstances = [];
     //Uri 타입으로 줘야됨 url 아님
     final url = Uri.parse('$baseUrl/$today');
