@@ -1,31 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_study_webtoon/models/webtoon_model.dart';
 import 'package:flutter_study_webtoon/services/api_service.dart';
+import 'package:flutter_study_webtoon/models/webtoon_model.dart'; // WebtoonModel import 추가!
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  List<WebtoonModel> webtoons = [];
-  bool isLoading = true;
-
-  void waitForWebToons() async {
-    webtoons = await ApiService.getTodaysToons(); // WebtoonModel의 리스트가 됨
-    isLoading = false;
-    // 화면 새로고침
-    setState(() {});
-  }
-
-// useEffect 처럼 먼저 로딩  + 초기화
-  @override
-  void initState() {
-    super.initState();
-    waitForWebToons();
-  }
+class HomeScreen extends StatelessWidget {
+  // api 값을 받아오는 거라서 const가 될 수 없음
+  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +22,16 @@ class _HomeScreenState extends State<HomeScreen> {
             fontWeight: FontWeight.w600,
           ),
         ),
+      ),
+      body: FutureBuilder<List<WebtoonModel>>(
+        future: ApiService.getTodaysToons(),
+        builder: (context, snapshot) {
+          // snapshot을 통해서 데이터가 들어왔는지 확인
+          if (snapshot.hasData) {
+            return const Text('There is data!');
+          }
+          return const Text('Loading...');
+        },
       ),
     );
   }
