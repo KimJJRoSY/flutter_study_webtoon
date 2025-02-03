@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_study_webtoon/services/api_service.dart';
-import 'package:flutter_study_webtoon/models/webtoon_model.dart'; // WebtoonModel import 추가!
+import 'package:flutter_study_webtoon/models/webtoon_model.dart';
+import 'package:flutter_study_webtoon/widgets/webtoon_widget.dart'; // WebtoonModel import 추가!
 
 class HomeScreen extends StatelessWidget {
   // api 값을 받아오는 거라서 const가 될 수 없음
@@ -76,40 +77,8 @@ class HomeScreen extends StatelessWidget {
       // itemBuilder는 ListView의 아이템을 만드는 역할을 함 => 만들어야하는 아이템의 위치(숫자)를 받음
       itemBuilder: (context, index) {
         var webtoon = snapshot.data![index];
-        return Column(
-          children: [
-            Container(
-              width: 250,
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  boxShadow: [
-                    BoxShadow(
-                        // 그림자가 얼마나 멀리 드리울지 정함
-                        blurRadius: 15,
-                        // offset은 그림자의 위치를 정함
-                        offset: Offset(10, 10),
-                        color: Colors.black.withOpacity(0.5))
-                  ]),
-              child: Image.network(
-                webtoon.thumb,
-                headers: const {
-                  'Referer': 'https://comic.naver.com',
-                },
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              webtoon.title,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        );
+        return (Webtoon(
+            title: webtoon.title, thumb: webtoon.thumb, id: webtoon.id));
       },
       // separatorBuilder은 widget을 리턴해야 하는 함수 -> 리스트와 구분자를 렌더링함
       // 구분자는 뭐든 사용 가능 -> widget,  이모지, 텍스트 OK
